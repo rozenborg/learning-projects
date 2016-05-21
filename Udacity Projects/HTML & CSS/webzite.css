@@ -1,0 +1,113 @@
+*{
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+	box-sizing: border-box;
+
+	background-color: #f9f2ec;
+
+	margin: 0px;
+}
+
+body *{	
+	font-family: "Courier New", Courier, monospace !important;
+	color: #f9f2ec;
+	background-color: transparent;
+}
+
+/**{
+	outline: 1px solid red !important
+}*/
+
+
+.hook {
+	position: relative;
+	margin-bottom: 12px;
+}
+
+/*try to make "padding" around hook image disappear.*/
+
+.hook img {
+	width: 100%;
+	z-index: -1;
+}
+
+
+.hook h1 {
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	vertical-align: bottom;
+	left: 0px;
+	width: 100%;
+	color: #f9f2ec;
+	margin-bottom: 10px;
+}
+
+.title {
+	text-align: center;
+}
+
+.title span {
+	color: #282828;
+}
+
+.title h2 {
+	margin-bottom: 0px;
+	color: #282828;
+}
+
+.story {
+	margin-top: 25px;
+	margin-bottom: 25px;
+	background-color: #282828;
+	border-radius: 3%;
+	margin-left: 8px;
+	margin-right: 8px;
+}
+
+.story-title {
+	padding-top: 20px;
+	margin-bottom: 0px;
+}
+
+.story-media {
+	display: flex;
+	padding: 20px;
+}
+
+.story-image {
+	display: flex;
+	flex-grow: 1;
+	width: 50%;
+}
+
+.story-image img {
+	width: 100%;
+	height: 100%;
+	border-radius: 8px;
+}
+
+.story-text {
+	flex-grow: 1;
+	width: 50%;
+	padding: 20px;
+	background-color: inherit;
+	padding-top: 0px; 
+}
+
+.left {
+	float: right;
+	text-align: right;
+}
+
+.right {
+	font-size: 10pt;
+	float: left;
+	text-align: justify;
+}
+
+h1,h2,h3 {
+	text-align: center;
+	width: 100%;
+}
