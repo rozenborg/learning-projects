@@ -1,4 +1,4 @@
-# all quiz text, lists, and dictionaries are listed at the top
+# all quiz text, answer banks, display messages, and dictionaries are listed here
 
 '''quiz texts'''
 
@@ -38,16 +38,17 @@ answersHard = ["class", "society", "production", "subject", "dominant"]
 
 '''display messages'''
 
-welcome = """Welcome to the powerful quotes fill-in-the-blanks quiz show!
+welcomeMessage = """Welcome to the powerful quotes fill-in-the-blanks quiz show!
 You will be shown a quote with a handful of key words and phrases missing.
 Follow the prompts to fill in the blanks.
 
 Please select a powerful quote category from the following:"""
 welcomeFail = "Sorry, that category does not exist. Please select from the following to begin: "
-answerCorrect = "\n" + "That, my friend, is correct."
-answerIncorrect = "\n" + "Oof. Sorry bud, dat ain't right. Attempts remaining: "
-winMessage = "\n" + "\n" + "You won! Hell yeah."
-loseMessage = "\n" + "\n" + "Ehhh, sorry, you are out of tries. We still think you are beautiful. Not worthy... but beautiful :/ :')"
+categoryList = " - " + "\n - ".join(quizCategoryBank)
+answerCorrect = "That, my friend, is correct."
+answerIncorrect = "Oof. Sorry bud, dat ain't right. Attempts remaining: "
+winMessage = "You won! Hell yeah."
+loseMessage = "Ehhh, sorry, you are out of tries. We still think you are beautiful. Not worthy... but beautiful :/ :')"
 
 
 '''dictionaries'''
@@ -64,70 +65,95 @@ quizAnswers = {
 	"hard": answersHard,
 }
 
+totalTries = 3
 
 '''code'''
 
-# this function finds and displays the next blank in a text
+# the nextBlank function finds and displays the next blank in a text, or returns None if the quiz is complete
 
 def nextBlank(blankIndex, selectedQuizText):
-	blankIndex += 1
-	blank = "__" + str(blankIndex) + "__"
+
+	blank = "__" + str(blankIndex + 1) + "__"
 	if blank in selectedQuizText:
 		return blank
 
-# this function runs the actual quiz game
+# the categorySelection function displays the intro message, prompts for a difficult level choice.
+
+def categorySelection(introMessage):
+
+	while True:
+		print "\n" + introMessage + "\n" + categoryList
+		quizCategory = raw_input("\n" + "Your selection: ")
+		if quizCategory in quizCategoryBank:
+
+		# if a difficulty is selected, the selction is displayed and the quiz continues
+
+			print "\n" + "You have chosen " + quizCategory + "." + "\n" + "\n" + "You will have three tries for each blank. Ride or die byatch!" + "\n" + "\n"
+			return quizCategory
+
+		# if a nonavailable option is selected, the user is notified and prompted to choose again.
+
+		introMessage = welcomeFail
+
+# the displayQuiz function prints the quiz text and updates it with correct answers to each blank,
+# and also returns win or loss message if if the game is completed or the user runs out of tries
+
+def displayQuiz(blankIndex, selectedQuizText, selectedAnswerBank):
+
+# game is complete when there are no "nextBlank"s (because that means the text is completely filled with correct answers)
+
+	while nextBlank(blankIndex, selectedQuizText) != None:
+		print selectedQuizText + "\n"
+
+		# this section updates the quiztext when a correct answer is input
+
+		selectedQuizText = checkAnswer(blankIndex, selectedQuizText, selectedAnswerBank, totalTries)
+		
+		# or instead triggers loss if checkanswer returns that the user has run out o tries
+
+		if selectedQuizText == False:
+			return loseMessage
+		blankIndex += 1
+	return winMessage
+
+# the checkAnswer function checks the inputed answer, determines whether it is correct,
+# displays number of tries left for incorrect answers, and returns loss if user runs out of tries
+
+def checkAnswer(blankIndex, selectedQuizText, selectedAnswerBank, totalTries):
+
+	triesLeft = totalTries
+	while triesLeft > 0:
+
+		# this selection elicits an answer
+
+		answer = raw_input("What word or phrase belongs in " + str(nextBlank(blankIndex, selectedQuizText)) + ":  ")
+		
+		# if answer is incorrect, a try is removed
+
+		if answer.lower() != selectedAnswerBank[blankIndex]:
+			triesLeft -= 1
+			print answerIncorrect + str(triesLeft)
+
+		# if answer is correct, the quiz text is updated with the answer and the user is notified
+		else:
+			print answerCorrect
+			selectedQuizText = selectedQuizText.replace(nextBlank(blankIndex, selectedQuizText), answer)
+			return selectedQuizText
+	return False
 
 def quiz(): 
 
-# this section displays the intro message and prompts the user to select a difficulty
+# this section displays the intro message and prompts the user to select a difficulty (or 'category')
+	
+	quizCategory = categorySelection(welcomeMessage)
 
-	introMessage = welcome
-	while True:
-		quizCategory = raw_input("\n" + introMessage + "\n" + " - " + "\n - ".join(quizCategoryBank) + "\n" + "\n" + "Your selection: ")
-		if quizCategory.lower() in quizCategoryBank:
-			break
-		introMessage = welcomeFail
-
-# the selected quiz is drawn from the content above, and the user is notified of their choice and number of tries for each guess
+# the selected difficult/category is used to assign the appropriate text and answer bank
 
 	selectedQuizText = quizTexts[quizCategory]
 	selectedAnswerBank = quizAnswers[quizCategory]
 
-	print "\n" + "You have chosen " + quizCategory + "." + "\n" + "\n" + "You will have three tries for each blank. Ride or die byatch!"
+# the process of displaying the quiz, and imbeded process of eliciting answers and verifying or penalizing until win or loss is carried out below
 
-# dear reviewer person: can you please give me guidance on how to refactor the code below?
-
-	blankIndex = 0
-	triesLeft = 3
-
-# this loop runs as long as their are blanks left in the quiz text (when there are no blanks left, the user will have won)
-
-	while nextBlank(blankIndex, selectedQuizText) != None:
-
-		# if the user runs out of tries they lose
-
-		if triesLeft == 0:
-			return loseMessage
-
-		# while the game is still live the latest quiz text is displayed and a prompt for the next guess is displayed
-
-		print "\n" + "\n" + selectedQuizText + "\n" + "\n"
-		response = raw_input("What word or phrase belongs in " + str(nextBlank(blankIndex, selectedQuizText)) + ":  ")
-		
-		# if the user guesses incorrectly, they are notified and the number of tries is reduced and displayed
-
-		if response.lower() != selectedAnswerBank[blankIndex]:
-			triesLeft -= 1
-			print answerIncorrect + str(triesLeft)
-
-		# if the answer is correct the word is filled in on the quiz, the quiz is displayed in its updated format, and the user is asked to enter their guess for the next blank
-
-		else:
-			print answerCorrect
-			selectedQuizText = selectedQuizText.replace(nextBlank(blankIndex, selectedQuizText), response)
-			blankIndex += 1
-			triesLeft = 3
-
-	return winMessage
+	return displayQuiz(0, selectedQuizText, selectedAnswerBank)
 
 print quiz()
