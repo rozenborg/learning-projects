@@ -1,5 +1,6 @@
 import unittest
 from app.office import Office
+from app.fellow import Fellow
 import pdb
 
 class RoomTest(unittest.TestCase):

@@ -5,3 +5,10 @@ class Staff(Person):
 	department: a string representing the department the staff member belongs to
 	
 	"""
+	def __init__(self, name, age, gender, role, department):
+
+		# self.name = name
+		# self.age = age
+		# self.gender = gender
+		self.role = role
+		self.department = department

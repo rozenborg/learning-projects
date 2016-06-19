@@ -2,14 +2,25 @@ class Room(object):
 	"""A room...
 
 	Attributes:
-	max_inhabitants: the maximum number of people that can inhabit a room
+	max_occupants: the maximum number of people that can inhabit a room
 	room_name: the name given to the room"""
+	
 
-	def __init__(self, max_inhabitants):
-		"""Returns a room object where the maximum number of people that can inhabit the room at a given time is *max_inhabitants*"""
+	def __init__(self, room_name, max_occupants):
+		"""Returns a room object where the maximum number of people that can inhabit the room at a given time is *max_occupants*"""
+		
+		self.room_name = room_name
+		self.max_occupants = max_occupants
+		self.occupants = []
+		self.number_occupants = 0
+		#consider adding occupant id
 
-		self.max_inhabitants = max_inhabitants
-		self.name = room_name
+	def add_occupant(self, person_name):
 
-	def designate_space(self):
-		"""Designates the room for a specific purpose, such as office space or living quarters."""
+		# self.occupants = []
+		# self.number_occupants = 0
+		self.occupants.append(person_name)
+		self.number_occupants += 1
+
+	def get_occupant_count(self):
+		return self.number_occupants
