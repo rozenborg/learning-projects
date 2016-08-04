@@ -1,4 +1,9 @@
-welcomeFail = "Sorry, that category does not exist. Please select fromthe following to begin: "
-quizCategoryBank = ["innovation", "existentialism", "power"]
+dict = {
+	'000001': 'flerp'
+}
 
-print welcomeFail, ", ".join(quizCategoryBank)
+
+print dict
+dict['000001'] = 'derp'
+
+print dict

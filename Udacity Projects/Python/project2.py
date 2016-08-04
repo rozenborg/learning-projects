@@ -31,7 +31,7 @@ the __5__ material relationships grasped as ideas."""
 
 '''answer banks'''
 
-answersEasy = ["crazy", "differently", "status quo", "ignore", "genius", "crazy"]
+answersEasy = ["crazy", "differently", "status quo", "ignore", "genius"]
 answersMedium = ["onesself", "dangerously", "infinite", "possible", "good"]
 answersHard = ["class", "society", "production", "subject", "dominant"]
 
@@ -98,35 +98,38 @@ def categorySelection(introMessage):
 # the displayQuiz function prints the quiz text and updates it with correct answers to each blank,
 # and also returns win or loss message if if the game is completed or the user runs out of tries
 
-def displayQuiz(blankIndex, selectedQuizText, selectedAnswerBank):
+def displayQuiz(selectedQuizText, selectedAnswerBank):
 
+	blankIndex = 0
 # game is complete when there are no "nextBlank"s (because that means the text is completely filled with correct answers)
 
 	while nextBlank(blankIndex, selectedQuizText) != None:
+		blank = nextBlank(blankIndex, selectedQuizText)
 		print selectedQuizText + "\n"
 
 		# this section updates the quiztext when a correct answer is input
 
-		selectedQuizText = checkAnswer(blankIndex, selectedQuizText, selectedAnswerBank, totalTries)
+		selectedQuizText = checkAnswer(blankIndex, blank, selectedQuizText, selectedAnswerBank, totalTries)
 		
 		# or instead triggers loss if checkanswer returns that the user has run out o tries
 
 		if selectedQuizText == False:
 			return loseMessage
 		blankIndex += 1
+	print selectedQuizText
 	return winMessage
 
 # the checkAnswer function checks the inputed answer, determines whether it is correct,
 # displays number of tries left for incorrect answers, and returns loss if user runs out of tries
 
-def checkAnswer(blankIndex, selectedQuizText, selectedAnswerBank, totalTries):
+def checkAnswer(blankIndex, blank, selectedQuizText, selectedAnswerBank, totalTries):
 
 	triesLeft = totalTries
 	while triesLeft > 0:
 
 		# this selection elicits an answer
 
-		answer = raw_input("What word or phrase belongs in " + str(nextBlank(blankIndex, selectedQuizText)) + ":  ")
+		answer = raw_input("What word or phrase belongs in " + str(blank) + ":  ")
 		
 		# if answer is incorrect, a try is removed
 
@@ -137,7 +140,7 @@ def checkAnswer(blankIndex, selectedQuizText, selectedAnswerBank, totalTries):
 		# if answer is correct, the quiz text is updated with the answer and the user is notified
 		else:
 			print answerCorrect
-			selectedQuizText = selectedQuizText.replace(nextBlank(blankIndex, selectedQuizText), answer)
+			selectedQuizText = selectedQuizText.replace(blank, answer)
 			return selectedQuizText
 	return False
 
@@ -154,6 +157,6 @@ def quiz():
 
 # the process of displaying the quiz, and imbeded process of eliciting answers and verifying or penalizing until win or loss is carried out below
 
-	return displayQuiz(0, selectedQuizText, selectedAnswerBank)
+	return displayQuiz(selectedQuizText, selectedAnswerBank)
 
 print quiz()

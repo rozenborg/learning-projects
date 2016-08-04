@@ -1,20 +1,18 @@
 import unittest
 from app.office import Office
+from app.living_space import LivingSpace
 from app.fellow import Fellow
+from app.staff import Staff
+from app.factories.room_factory import RoomFactory
+from app.room import Room
 import pdb
 
-class RoomTest(unittest.TestCase):
 
-	def test_add_occupant(self):
-		# pdb.set_trace()
-		room = Office("Moon", 6)
-		person = Fellow("Jerk", 100, "Male", "Y", "D1")
-		room.add_occupant(person)
-		self.assertEqual(1, room.get_occupant_count())
-
-		person = Staff("Hero", 12, "Female", "Training Warrior", "Training Department")
-		room.add_occupant(person)
-		self.assertEqual(2, room.get_occupant_count())
+class RoomTestCase(unittest.TestCase):
+    def test_assign_room_purpose(self):
+        room = RoomFactory.create("Mission Control", 6)
+        room.purpose = Room.assign_room_purpose("Mission Control", "office")
+        self.assertEqual(room.purpose, "office")
 
 if __name__ == '__main__':
-	unittest.main()
+    unittest.main()

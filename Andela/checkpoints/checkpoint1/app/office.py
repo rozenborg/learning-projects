@@ -5,5 +5,8 @@ class Office(Room):
 
 	Attributes:
 	"""
+	def __init__(self, name, max_occupancy):
+
+		super(Office, self).__init__(name, max_occupancy)
 
 
